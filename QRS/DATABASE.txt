@@ -1,0 +1,242 @@
+-- Veritabanını seçin
+USE db3;
+
+-- Campus tablosu oluşturulması
+CREATE TABLE campus (
+    campus_id INT AUTO_INCREMENT PRIMARY KEY,
+    campus_name VARCHAR(50) NOT NULL
+);
+
+-- Campus verilerinin eklenmesi
+INSERT INTO campus (campus_name) VALUES 
+('Antalya'), ('Ataşehir'), ('Bahçeşehir'), ('Bursa'), 
+('Çamlıca'), ('Çayyolu(Ankara)'), ('Çukurambar(Ankara)'), 
+('Esenşehir'), ('Florya');
+
+-- School_type tablosu oluşturulması
+CREATE TABLE school_type (
+    school_type_id INT AUTO_INCREMENT PRIMARY KEY,
+    school_type VARCHAR(50) NOT NULL
+);
+
+-- School_type verilerinin eklenmesi
+INSERT INTO school_type (school_type) VALUES 
+('anaokulu'), ('ilkokul'), ('ortaokul'), ('lise');
+
+-- School tablosu oluşturulması
+CREATE TABLE school (
+    school_id INT AUTO_INCREMENT PRIMARY KEY,
+    school_name VARCHAR(60) NOT NULL,
+    address VARCHAR(150),
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    school_type_id INT,
+    campus_id INT,
+    FOREIGN KEY (campus_id) REFERENCES campus(campus_id),
+    FOREIGN KEY (school_type_id) REFERENCES school_type(school_type_id)
+);
+
+-- School verilerinin eklenmesi
+INSERT INTO school (school_name, address, phone, email, school_type_id, campus_id) VALUES
+('Antalya Anaokulu', 'Muratpaşa/Antalya', '444 5 703', 'info@qrs.com', 1, 1),
+('Antalya İlkokulu', 'Muratpaşa/Antalya', '444 5 703', 'info@qrs.com', 2, 1),
+('Antalya Ortaokulu', 'Muratpaşa/Antalya', '444 5 703', 'info@qrs.com', 3, 1),
+('Antalya Lisesi', 'Muratpaşa/Antalya', '444 5 703', 'info@qrs.com', 4, 1),
+('Ataşehir Anaokulu', 'Ataşehir/İstanbul', '444 3 424', 'info@qrs.com', 1, 2),
+('Ataşehir İlkokulu', 'Ataşehir/İstanbul', '444 3 424', 'info@qrs.com', 2, 2),
+('Ataşehir Ortaokulu', 'Ataşehir/İstanbul', '444 3 424', 'info@qrs.com', 3, 2),
+('Bahçeşehir Anaokulu', 'Bahçeşehir/İstanbul', '444 4 423', 'info@qrs.com', 1, 3),
+('Bahçeşehir İlkokulu', 'Bahçeşehir/İstanbul', '444 4 423', 'info@qrs.com', 2, 3),
+('Bahçeşehir Ortaokulu', 'Bahçeşehir/İstanbul', '444 4 423', 'info@qrs.com', 3, 3);
+
+-- Period tablosu oluşturulması
+CREATE TABLE period (
+    period_id INT AUTO_INCREMENT PRIMARY KEY,
+    period_name VARCHAR(100) NOT NULL
+);
+
+-- Period verilerinin eklenmesi
+INSERT INTO period (period_name) VALUES 
+('2024-2025'), ('2025-2026');
+
+-- Student tablosu oluşturulması
+CREATE TABLE student (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(100) NOT NULL,
+    student_surname VARCHAR(100) NOT NULL,
+    gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    address VARCHAR(255),
+    birthdate DATE,
+    school_id INT DEFAULT NULL,
+    FOREIGN KEY (school_id) REFERENCES school(school_id)
+);
+
+-- Student verilerinin eklenmesi
+INSERT INTO student (student_name, student_surname, gender, address, birthdate, school_id) VALUES
+('Ömer Efe', 'Kaymaz', 'Male', 'Sancaktepe/Istanbul', '2002-02-05', '4'),
+('Halil', 'İbrahim', 'Male', 'Kadıköy/Istanbul', '2001-06-18', '7'),
+('Melis', 'Demir', 'Female', 'Ataşehir/Istanbul', '2008-07-02', '9'),
+('Tunahan', 'Arı', 'Male', 'Üsküdar/Istanbul', '2012-01-21', '7'),
+('Eslem', 'Tunç', 'Female', 'Florya/Istanbul', '2015-10-13', '9'),
+-- Yeni eklenen öğrenciler
+('Ali', 'Veli', 'Male', 'Antalya', '2003-04-20', '4'),
+('Ayşe', 'Yılmaz', 'Female', 'Antalya', '2004-08-15', '4'),
+('Mehmet', 'Kara', 'Male', 'Ataşehir/Istanbul', '2010-05-25', '7'),
+('Zeynep', 'Çelik', 'Female', 'Bahçeşehir/Istanbul', '2012-09-10', '9'),
+('Fatma', 'Demir', 'Female', 'Çamlıca/Istanbul', '2014-03-15', '5'),
+('Emir', 'Yıldız', 'Male', 'Çamlıca/Istanbul', '2013-11-22', '5'),
+('Merve', 'Ak', 'Female', 'Çamlıca/Istanbul', '2011-07-30', '5');
+
+-- Class tablosu oluşturulması
+CREATE TABLE class (
+    class_id INT AUTO_INCREMENT PRIMARY KEY,
+    class_name VARCHAR(100) NOT NULL
+);
+
+-- Class verilerinin eklenmesi
+INSERT INTO class (class_name) VALUES 
+('bir'), ('iki'), ('üç'), ('dört'), ('beş'), 
+('altı'), ('yedi'), ('sekiz'), ('dokuz'), 
+('on'), ('on bir'), ('on iki');
+
+-- Branch tablosu oluşturulması
+CREATE TABLE branch (
+    branch_id INT AUTO_INCREMENT PRIMARY KEY,
+    branch_name VARCHAR(50) NOT NULL
+);
+
+-- Branch verilerinin eklenmesi
+INSERT INTO branch (branch_name) VALUES 
+('A'), ('B'), ('C'), ('D'), ('E');
+
+-- Student_enrollment tablosu oluşturulması
+CREATE TABLE student_enrollment (
+    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    school_id INT,
+    class_id INT,
+    branch_id INT,
+    period_id INT,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (school_id) REFERENCES school(school_id),
+    FOREIGN KEY (class_id) REFERENCES class(class_id),
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (period_id) REFERENCES period(period_id)
+);
+
+-- Student_enrollment verilerinin eklenmesi
+INSERT INTO student_enrollment (student_id, school_id, class_id, branch_id, period_id) VALUES 
+(1, 4, 10, 1, 1),  -- Ömer Efe Kaymaz, Antalya Lisesi, Onuncu Sınıf, A Şubesi, 2024-2025
+(2, 7, 8, 2, 2),   -- Halil İbrahim, Ataşehir Ortaokulu, Sekizinci Sınıf, B Şubesi, 2025-2026
+(3, 9, 5, 3, 1),   -- Melis Demir, Bahçeşehir İlkokulu, Beşinci Sınıf, C Şubesi, 2024-2025
+(4, 7, 4, 4, 2),   -- Tunahan Arı, Ataşehir Ortaokulu, Dördüncü Sınıf, D Şubesi, 2025-2026
+(5, 9, 1, 5, 1),   -- Eslem Tunç, Bahçeşehir İlkokulu, Birinci Sınıf, E Şubesi, 2024-2025
+-- Yeni eklenen öğrenciler
+(6, 4, 9, 1, 1),   -- Ali Veli, Antalya Lisesi, Dokuzuncu Sınıf, A Şubesi, 2024-2025
+(7, 4, 9, 2, 1),   -- Ayşe Yılmaz, Antalya Lisesi, Dokuzuncu Sınıf, B Şubesi, 2024-2025
+(8, 7, 7, 2, 2),   -- Mehmet Kara, Ataşehir Ortaokulu, Yedinci Sınıf, B Şubesi, 2025-2026
+(9, 9, 3, 3, 1),   -- Zeynep Çelik, Bahçeşehir İlkokulu, Üçüncü Sınıf, C Şubesi, 2024-2025
+(10, 5, 2, 1, 1),  -- Fatma Demir, Çamlıca İlkokulu, İkinci Sınıf, A Şubesi, 2024-2025
+(11, 5, 2, 2, 1),  -- Emir Yıldız, Çamlıca İlkokulu, İkinci Sınıf, B Şubesi, 2024-2025
+(12, 5, 1, 3, 1);  -- Merve Ak, Çamlıca İlkokulu, Birinci Sınıf, C Şubesi, 2024-2025
+
+-- Exam tablosu oluşturulması
+CREATE TABLE exam (
+    exam_id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_name VARCHAR(100) NOT NULL,
+    exam_date DATE NOT NULL,
+    school_id INT,
+    class_id INT,
+    branch_id INT,
+    period_id INT,
+    FOREIGN KEY (school_id) REFERENCES school(school_id),
+    FOREIGN KEY (class_id) REFERENCES class(class_id),
+    FOREIGN KEY (branch_id) REFERENCES branch(branch_id),
+    FOREIGN KEY (period_id) REFERENCES period(period_id)
+);
+
+-- Exam verilerinin eklenmesi
+INSERT INTO exam (exam_name, exam_date, school_id, class_id, branch_id, period_id) VALUES 
+('Matematik Sınavı', '2024-11-15', 4, 10, 1, 1),  -- Antalya Lisesi, 10. Sınıf, A Şubesi, 2024-2025
+('Fen Bilimleri Sınavı', '2025-03-22', 7, 8, 2, 2), -- Ataşehir Ortaokulu, 8. Sınıf, B Şubesi, 2025-2026
+('Türkçe Sınavı', '2024-12-05', 9, 5, 3, 1); -- Bahçeşehir İlkokulu, 5. Sınıf, C Şubesi, 2024-2025
+
+-- Teacher tablosu oluşturulması
+CREATE TABLE teacher (
+    teacher_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_name VARCHAR(100) NOT NULL,
+    teacher_surname VARCHAR(100) NOT NULL,
+    gender ENUM('Male', 'Female') NOT NULL,
+    address VARCHAR(150),
+    phone VARCHAR(20),
+    email VARCHAR(100) UNIQUE,  -- Email'i benzersiz yapma
+    birthdate DATE
+);
+
+-- Teacher verilerinin eklenmesi
+INSERT INTO teacher (teacher_name, teacher_surname, gender, address, phone, email, birthdate) VALUES 
+('Beyza', 'Demir', 'Female', 'Bahçeşehir/Istanbul', '0537 320 24 24', 'beyza.demir@qrs.com', '1992-02-15'),
+('Ahmet', 'Baysal', 'Male', 'Bursa', '0534 487 45 12', 'ahmet.baysal@qrs.com', '1984-06-25'),
+('Ayşe', 'Kaya', 'Female', 'Esenşehir/Istanbul', '0535 212 19 15', 'ayse.kaya@qrs.com', '1975-11-10'),
+('Mehmet', 'Turgut', 'Male', 'Çamlıca/Istanbul', '0536 445 21 15', 'mehmet.turgut@qrs.com', '1989-08-05');
+
+-- Teacher_credentials tablosu oluşturulması
+CREATE TABLE teacher_credentials (
+    credential_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT,
+    teacher_email VARCHAR(100) UNIQUE,  -- Email'i benzersiz yapma
+    password VARCHAR(255) NOT NULL,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id)
+);
+
+-- Teacher_credentials verilerinin eklenmesi
+INSERT INTO teacher_credentials (teacher_id, teacher_email, password) VALUES 
+(1, 'beyza.demir@qrs.com', '123456'),
+(2, 'ahmet.baysal@qrs.com', 'abcdef'),
+(3, 'ayse.kaya@qrs.com', 'ayse2023'),
+(4, 'mehmet.turgut@qrs.com', 'mturgut1989');
+
+
+-- Teacher_school_assignment tablosunun oluşturulması
+CREATE TABLE teacher_school_assignments (
+    assignment_id INT AUTO_INCREMENT PRIMARY KEY,
+    teacher_id INT,
+    school_id INT,
+    period_id INT,
+    FOREIGN KEY (teacher_id) REFERENCES teacher(teacher_id),
+    FOREIGN KEY (school_id) REFERENCES school(school_id),
+    FOREIGN KEY (period_id) REFERENCES period(period_id)
+);
+
+-- Teacher_school_assignment verilerinin eklenmesi
+INSERT INTO teacher_school_assignments (teacher_id, school_id, period_id) VALUES 
+(1, 4, 1),   -- Beyza Demir, Antalya Lisesi, 2024-2025
+(2, 7, 1),   -- Ahmet Baysal, Ataşehir Ortaokulu, 2024-2025
+(3, 9, 1),   -- Ayşe Kaya, Bahçeşehir İlkokulu, 2024-2025
+(4, 5, 2);  -- Mehmet Turgut, Çamlıca İlkokulu, 2025-2026
+
+
+-- Student_school tablosu oluşturulması
+CREATE TABLE student_school (
+    student_school_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    school_id INT,
+    FOREIGN KEY (student_id) REFERENCES student(student_id),
+    FOREIGN KEY (school_id) REFERENCES school(school_id)
+);
+
+-- Student_school verilerinin eklenmesi
+INSERT INTO student_school (student_id, school_id) VALUES
+(1, 4),  -- Ömer Efe Kaymaz, Antalya Lisesi
+(2, 7),  -- Halil İbrahim, Ataşehir Ortaokulu
+(3, 9),  -- Melis Demir, Bahçeşehir İlkokulu
+(4, 7),  -- Tunahan Arı, Ataşehir Ortaokulu
+(5, 9),  -- Eslem Tunç, Bahçeşehir İlkokulu
+-- Yeni eklenen öğrenciler
+(6, 4),  -- Ali Veli, Antalya Lisesi
+(7, 4),  -- Ayşe Yılmaz, Antalya Lisesi
+(8, 7),  -- Mehmet Kara, Ataşehir Ortaokulu
+(9, 9),  -- Zeynep Çelik, Bahçeşehir İlkokulu
+(10, 5), -- Fatma Demir, Çamlıca İlkokulu
+(11, 5), -- Emir Yıldız, Çamlıca İlkokulu
+(12, 5); -- Merve Ak, Çamlıca İlkokulu

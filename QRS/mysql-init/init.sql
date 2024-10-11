@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS teacher2 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  teacher_name VARCHAR(255) NOT NULL,
+  teacher_surname VARCHAR(255) NOT NULL
+);

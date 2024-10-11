@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QRS</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+
+        body {
+            background-image: url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex: 1 0 auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            flex: 1 0 auto;
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            margin-bottom: 20px; /* We added space in between */
+        }
+
+        h1 {
+            margin: 20px 0 20px 0;
+            padding: 0;
+            font-size: 2.5em;
+            color: #333;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .main-logo {
+            width: 300px;
+            height: auto;
+            display: block;
+            margin-bottom: 20px;
+            border: 5px solid rgb(135, 193, 226); /* Optional border */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow */
+        }
+
+        #fileInput, #studentSelect {
+            border: 4px rgb(0, 0, 0) solid;
+            border-style: double;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgb(135, 193, 226);
+            margin: 10px 0; /* Top and bottom margins reduced */
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+        }
+
+        #fileInput:hover, #studentSelect:hover {
+            background-color: rgb(30, 182, 228);
+        }
+
+        button {
+            border: none;
+            border-radius: 25px;
+            width: 220px;
+            padding: 12px 20px;
+            font-size: 1em;
+            background: linear-gradient(45deg, #89C1E2, #1EB6E4);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            transition: background 0.3s, transform 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, #1EB6E4, #89C1E2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.3);
+        }
+
+        #result {
+            max-width: 70%;
+            word-wrap: break-word;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            text-align: center;
+        }
+
+        .old-logo {
+            width: 450px;
+            height: auto;
+            display: block;
+            border: 10px rgb(135, 193, 226) solid;
+            margin-bottom: 20px;
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Light shadow */
+        }
+
+        footer {
+            background-color: rgb(11, 2, 63);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            flex-shrink: 0;
+            width: 100%;
+            box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Additional Style Improvements */
+        input[type="email"], input[type="password"] {
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            margin: 8px 0 20px 0;
+            display: inline-block;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+
+        input[type="email"]:focus, input[type="password"]:focus {
+            border: 2px solid #1EB6E4;
+            outline: none;
+        }
+
+        /* Organizing Form Elements Inside Flexbox */
+        .upload-section-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .upload-section-form > * {
+            width: 100%;
+            max-width: 400px;
+            margin: 10px 0;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 600px) {
+            .content-wrapper {
+                width: 100%;
+                padding: 20px;
+            }
+
+            .old-logo, .main-logo {
+                width: 250px;
+            }
+
+            button {
+                width: 180px;
+            }
+
+            input[type="email"], input[type="password"], #fileInput, #studentSelect {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="loginSection" class="content-wrapper">
+            <img src="QRSdesign.PNG" alt="QRSdesign" class="main-logo">
+            <h1>Teacher Login</h1>
+            <input type="email" id="teacherEmail" placeholder="Teacher Email" required>
+            <input type="password" id="teacherPassword" placeholder="Password" required>
+            <button onclick="validateTeacher()">Login</button>
+            <pre id="loginResult"></pre>
+        </div>
+        <div id="uploadSection" class="content-wrapper" style="display: none;">
+            <img src="QRSlogo.PNG" alt="QRSLogo" class="old-logo">
+            <h1>Image Loading and Processing</h1>
+            <div class="upload-section-form">
+                <select id="studentSelect" required>
+                    <option value="">Select Student</option>
+                    <!-- Student list will be loaded here dynamically -->
+                </select>
+                <input type="file" id="fileInput" accept="image/*" required>
+                <button style="font-size: medium;" onclick="sendRequest()">Process and Save Image</button>
+                <button onclick="logout()" style="font-size: medium; background: #E74C3C; width: 150px;">Logout</button>
+                <pre id="result"></pre>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 QRS Group of Companies. All rights reserved.</p>
+    </footer>
+    <script>
+        // Check session on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const teacherEmail = localStorage.getItem('teacherEmail');
+            if (isLoggedIn === 'true' && teacherEmail) {
+                document.getElementById('loginSection').style.display = 'none';
+                document.getElementById('uploadSection').style.display = 'flex';
+                loadStudents(teacherEmail);
+            }
+        });
+
+        async function validateTeacher() {
+            const teacherEmail = document.getElementById('teacherEmail').value;
+            const teacherPassword = document.getElementById('teacherPassword').value;
+
+            try {
+                const response = await fetch('http://localhost:3000/validate-teacher', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ teacher_email: teacherEmail, password: teacherPassword })
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    // Save session info to Local Storage
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('teacherEmail', teacherEmail);
+
+                    document.getElementById('loginSection').style.display = 'none';
+                    document.getElementById('uploadSection').style.display = 'flex';
+                    loadStudents(teacherEmail); // Load student list
+                } else {
+                    document.getElementById('loginResult').textContent = 'Login failed. Please check your credentials.';
+                }
+            } catch (error) {
+                console.error('Error during teacher validation:', error);
+                document.getElementById('loginResult').textContent = 'An error occurred during login.';
+            }
+        }
+
+        async function loadStudents(teacherEmail) {
+            try {
+                const response = await fetch('http://localhost:3000/get-students', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ teacher_email: teacherEmail })
+                });
+
+                const result = await response.json();
+                console.log('Result from get-students:', result); // Check the response
+
+                if (response.ok && result.status === 'success') {
+                    const studentSelect = document.getElementById('studentSelect');
+                    studentSelect.innerHTML = '<option value="">Select Student</option>'; // Clear default option
+                    result.students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.student_id;
+                        option.textContent = student.student_name; // Show name and surname together
+                        studentSelect.appendChild(option);
+                    });
+                } else {
+                    alert('An error occurred while loading the student list.');
+                }
+            } catch (error) {
+                console.error('Error loading students:', error);
+                alert('An error occurred while loading the student list.');
+            }
+        }
+
+        async function sendRequest() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            const studentId = document.getElementById('studentSelect').value;
+
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
+
+            if (!studentId) {
+                alert('Please select a student.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('image', file);
+            formData.append('student_id', studentId);
+
+            try {
+                const response = await fetch('http://localhost:3000/process-image', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.status === 'success') {
+                    document.getElementById('result').textContent = JSON.stringify(result, null, 2);
+                    alert('Image processed and saved successfully!');
+                } else {
+                    throw new Error(result.message || 'An unknown error occurred.');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').textContent = 'An error occurred.';
+                alert('An error occurred while processing the image.');
+            }
+        }
+
+        function logout() {
+            // Remove session info from Local Storage
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('teacherEmail');
+
+            // Hide Upload Section and Show Login Section
+            document.getElementById('uploadSection').style.display = 'none';
+            document.getElementById('loginSection').style.display = 'flex';
+        }
+    </script>
+</body>
+</html>
