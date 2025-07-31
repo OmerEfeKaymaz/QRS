@@ -1,6 +1,6 @@
-# BIL-QRS: Quick Recognition Systems
+# QRS: Quick Recognition Systems
 
-**BIL-QRS (Quick Recognition Systems)** is an end-to-end automated system designed to streamline the evaluation of handwritten exam papers in educational institutions. Built with a full-stack architecture using Python (Flask), Node.js, and MySQL, the system provides teachers with an intuitive and efficient platform for managing student submissions and automating image-based answer extraction.
+**QRS (Quick Recognition Systems)** is an end-to-end automated system designed to streamline the evaluation of handwritten exam papers in educational institutions. Built with a full-stack architecture using Python (Flask), Node.js, and MySQL, the system provides teachers with an intuitive and efficient platform for managing student submissions and automating image-based answer extraction.
 
 ---
 
